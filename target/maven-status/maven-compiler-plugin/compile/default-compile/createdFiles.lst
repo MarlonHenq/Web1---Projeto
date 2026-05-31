@@ -1,0 +1,16 @@
+br/ufscar/dc/dsw/domain/Projeto.class
+br/ufscar/dc/dsw/dao/IDesenvolvedorDAO.class
+br/ufscar/dc/dsw/domain/Anexo.class
+br/ufscar/dc/dsw/domain/Proposta.class
+br/ufscar/dc/dsw/FreelancersJpaApplication.class
+br/ufscar/dc/dsw/domain/Usuario.class
+br/ufscar/dc/dsw/dao/IPropostaDAO.class
+br/ufscar/dc/dsw/dao/IUsuarioDAO.class
+br/ufscar/dc/dsw/domain/Desenvolvedor.class
+br/ufscar/dc/dsw/dao/IAnexoDAO.class
+br/ufscar/dc/dsw/dao/IEmpresaDAO.class
+br/ufscar/dc/dsw/domain/Administrador.class
+br/ufscar/dc/dsw/domain/Empresa.class
+br/ufscar/dc/dsw/domain/enums/Sexo.class
+br/ufscar/dc/dsw/domain/enums/StatusProposta.class
+br/ufscar/dc/dsw/dao/IProjetoDAO.class
