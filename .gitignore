@@ -1,3 +1,13 @@
-git status
-git add .
+target/
+*.class
+*.jar
+*.war
+*.ear
+Freelancers.db
 *.password
+.env
+.env.*
+.idea/
+*.iml
+.vscode/
+.DS_Store

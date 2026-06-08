@@ -1,0 +1,16 @@
+[Unit]
+Description=Freelancers Spring Boot (Web1)
+After=network.target
+
+[Service]
+Type=simple
+User=deploy
+Group=deploy
+WorkingDirectory=/var/www/freelancers
+ExecStart=/usr/bin/java ${JAVA_OPTS} -jar /var/www/freelancers/app/FreelancersJPA.jar --spring.profiles.active=prod
+Restart=on-failure
+RestartSec=5
+Environment=JAVA_OPTS=-Xmx512m
+
+[Install]
+WantedBy=multi-user.target

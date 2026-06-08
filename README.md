@@ -2,6 +2,15 @@
 
 Sistema para Contratação de Desenvolvedores (Freelancers) — entrega T5 (Spring Data JPA).
 
+Produção: [web1.marlonhenq.dev](https://web1.marlonhenq.dev)
+
+## CI/CD
+
+- **PR → `main`:** Maven build/test, Gitleaks, Semgrep, avaliação de segurança por IA (nota ≥ 7/10)
+- **Merge → `main`:** deploy automático via GitHub Actions (SSH + migrações Lua + systemd)
+
+Detalhes em [docs/DEPLOY.md](docs/DEPLOY.md).
+
 ## Pré-requisitos
 
 - Java 17+
