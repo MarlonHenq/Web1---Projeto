@@ -10,6 +10,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 
 import br.ufscar.dc.dsw.dao.IAnexoDAO;
 import br.ufscar.dc.dsw.dao.IDesenvolvedorDAO;
@@ -37,6 +38,7 @@ public class FreelancersJpaApplication {
 	}
 
 	@Bean
+	@Profile("!prod")
 	public CommandLineRunner demo(
 			IUsuarioDAO usuarioDAO,
 			IEmpresaDAO empresaDAO,
