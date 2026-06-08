@@ -1,0 +1,103 @@
+name: Deploy Production
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy via SSH
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Build JAR
+        run: mvn -B package -DskipTests
+
+      - name: Setup SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add server to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          ssh-keyscan -p "${{ secrets.SSH_PORT || 22 }}" -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Prepare deploy bundle
+        run: |
+          set -euo pipefail
+          mkdir -p deploy-bundle/app
+          cp target/FreelancersJPA-*.jar deploy-bundle/app/FreelancersJPA.jar
+          cp -r scripts deploy-bundle/
+          cp -r deploy deploy-bundle/
+          cp -r database deploy-bundle/
+          chmod +x deploy-bundle/scripts/deploy/*.sh 2>/dev/null || true
+
+      - name: Deploy application (rsync)
+        env:
+          SSH_PORT: ${{ secrets.SSH_PORT || 22 }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          set -euo pipefail
+          RSYNC_SSH="ssh -p ${SSH_PORT} -o StrictHostKeyChecking=yes"
+          rsync -avz --delete \
+            --omit-dir-times \
+            --no-owner --no-group \
+            --exclude 'data/' \
+            --exclude 'backups/' \
+            --exclude '.env' \
+            -e "${RSYNC_SSH}" \
+            deploy-bundle/ "${SSH_USER}@${SSH_HOST}:${DEPLOY_PATH}/"
+
+      - name: Post-deploy on server
+        env:
+          SSH_PORT: ${{ secrets.SSH_PORT || 22 }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          set -euo pipefail
+          ssh -p "${SSH_PORT}" "${SSH_USER}@${SSH_HOST}" bash -s <<REMOTE
+          set -euo pipefail
+          cd "${DEPLOY_PATH}"
+          mkdir -p data backups/sqlite app
+          chmod +x scripts/deploy/*.sh 2>/dev/null || true
+
+          if [[ -f scripts/deploy/backup-sqlite.sh ]]; then
+            scripts/deploy/backup-sqlite.sh || true
+          fi
+
+          lua scripts/migrate.lua --db "${DEPLOY_PATH}/data/Freelancers.db" --migrations "${DEPLOY_PATH}/database/migrations"
+
+          if [[ -f deploy/systemd/freelancers.service ]] && [[ ! -f /etc/systemd/system/freelancers.service ]]; then
+            echo "AVISO: instale systemd manualmente (sudo cp deploy/systemd/freelancers.service /etc/systemd/system/)"
+          fi
+
+          sudo systemctl restart freelancers
+          sleep 3
+          if ! sudo systemctl is-active --quiet freelancers; then
+            echo "ERRO: serviço freelancers não está ativo"
+            sudo systemctl status freelancers --no-pager || true
+            exit 1
+          fi
+          echo "Deploy concluído em \$(date -Iseconds)"
+          REMOTE
