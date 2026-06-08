@@ -3,6 +3,7 @@ name: Deploy Production
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 concurrency:
   group: production-deploy
@@ -92,11 +93,11 @@ jobs:
             echo "AVISO: instale systemd manualmente (sudo cp deploy/systemd/freelancers.service /etc/systemd/system/)"
           fi
 
-          sudo systemctl restart freelancers
-          sleep 3
-          if ! sudo systemctl is-active --quiet freelancers; then
+          sudo /usr/bin/systemctl restart freelancers
+          sleep 8
+          if ! sudo /usr/bin/systemctl is-active --quiet freelancers; then
             echo "ERRO: serviço freelancers não está ativo"
-            sudo systemctl status freelancers --no-pager || true
+            sudo /usr/bin/systemctl status freelancers --no-pager || true
             exit 1
           fi
           echo "Deploy concluído em \$(date -Iseconds)"
