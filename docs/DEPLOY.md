@@ -46,6 +46,23 @@ gh secret set OPENAI_API_KEY -R MarlonHenq/Web1---Projeto
 
 Sem essa secret, o workflow **AI security review** roda mas **não avalia** o diff (PR liberado). Os demais secrets (`SSH_*`, `DEPLOY_PATH`) são necessários para o deploy.
 
+### Bypass manual da revisão de IA (casos excepcionais)
+
+Use **somente** quando o achado for falso positivo aceito para o MVP (ex.: credenciais de demo documentadas no README para ambiente local).
+
+1. No PR, adicione a label **`ai-security-skip`**
+2. Reexecute o workflow **AI Security Review** (ou faça um push vazio)
+
+O check passa com aviso e o motivo aparece no comentário do bot.
+
+Localmente, para testar o script sem chamar a API:
+
+```bash
+AI_SECURITY_SKIP=true python3 scripts/ci/ai_security_review.py
+```
+
+Credenciais fictícias de desenvolvimento devem estar no README com aviso explícito de que **não vão para produção** (ver seção no README).
+
 ### Environment `production`
 
 Em **Settings → Environments → production** você pode exigir aprovação manual antes de cada deploy.

@@ -18,7 +18,11 @@ make run
 
 Acesse `http://localhost:8080`
 
-### Logins de demonstração
+### Logins de demonstração (somente ambiente local / MVP)
+
+> **Aviso de segurança (MVP acadêmico):** as credenciais abaixo são **fictícias e apenas para desenvolvimento local**.
+> Elas são criadas automaticamente pelo seed (`@Profile("!prod")`) ao rodar `make run` em máquina de desenvolvimento.
+> **Não use essas senhas em produção.** Em deploy real, o seed não roda e as senhas devem ser definidas via variáveis de ambiente (`DEMO_*_PASSWORD`) ou cadastro manual.
 
 | Papel | E-mail | Senha |
 |-------|--------|-------|

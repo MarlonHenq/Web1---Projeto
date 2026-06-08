@@ -33,6 +33,11 @@ Avalie riscos reais introduzidos ou agravados pelo diff, por exemplo:
 
 Ignore problemas hipotéticos em código não alterado. Seja pragmático para um MVP acadêmico.
 
+Exceções aceitáveis em MVP acadêmico (não reduzir a nota; no máximo severity "info"):
+- Credenciais de demonstração documentadas no README com aviso explícito de "somente local/MVP" e "não usar em produção"
+- Propriedades `app.demo.*` ou variáveis `DEMO_*_PASSWORD` usadas apenas para seed em perfil de desenvolvimento (`!prod`)
+- Seed de dados fake em `CommandLineRunner` com `@Profile("!prod")` e senhas persistidas com BCrypt
+
 Responda SOMENTE com JSON válido neste formato:
 {
   "score": <número de 0 a 10, pode ter uma casa decimal>,
@@ -193,9 +198,22 @@ def finish_skip(reason: str, min_score: float) -> int:
     return 0
 
 
+def is_manual_skip() -> str | None:
+    if os.environ.get("AI_SECURITY_SKIP", "").strip().lower() in ("1", "true", "yes"):
+        return "variável AI_SECURITY_SKIP ativada"
+    reason = os.environ.get("AI_SECURITY_SKIP_REASON", "").strip()
+    if reason:
+        return reason
+    return None
+
+
 def main() -> int:
     api_key = os.environ.get("OPENAI_API_KEY", "").strip()
     min_score = float(os.environ.get("MIN_SECURITY_SCORE", str(DEFAULT_MIN_SCORE)))
+
+    skip = is_manual_skip()
+    if skip:
+        return finish_skip(f"Bypass manual: {skip}", min_score)
 
     if not api_key:
         return finish_skip(
