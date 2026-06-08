@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(#{login.title})}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<main class="container page-content">
+    <div class="card card-dark login-card p-4">
+        <h2 th:text="#{login.title}">Login</h2>
+        <div th:if="${param.error}" class="alert alert-danger mt-3" th:text="#{login.error}">Credenciais inválidas</div>
+        <form th:action="@{/login}" method="post" class="mt-4">
+            <div class="mb-3">
+                <label class="form-label" th:text="#{login.email}">E-mail</label>
+                <input type="email" name="username" class="form-control" required/>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" th:text="#{login.senha}">Senha</label>
+                <input type="password" name="password" class="form-control" required/>
+            </div>
+            <button type="submit" class="btn btn-freelancers w-100" th:text="#{login.submit}">Entrar</button>
+        </form>
+    </div>
+</main>
+<div th:replace="~{fragments/layout :: footer}"></div>
+<div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>

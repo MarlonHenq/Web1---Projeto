@@ -5,6 +5,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,24 +26,32 @@ public class Projeto {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotBlank
+	@Size(max = 100)
 	@Column(nullable = false, length = 100)
 	private String titulo;
 
+	@NotBlank
+	@Size(max = 2000)
 	@Column(nullable = false, length = 2000)
 	private String descricao;
 
+	@NotBlank
+	@Size(max = 200)
 	@Column(nullable = false, length = 200)
 	private String stackTecnologica;
 
+	@NotNull
 	@Column(nullable = false, columnDefinition = "DECIMAL(12,2)")
 	private BigDecimal orcamentoEstimado;
 
+	@NotNull
 	@Column(nullable = false)
 	private LocalDate prazoEntrega;
 
 	@ManyToOne
 	@JoinColumn(name = "empresa_id", nullable = false)
-	private Empresa empresa;
+	private Usuario empresa;
 
 	@OneToMany(mappedBy = "projeto")
 	private List<Proposta> propostas = new ArrayList<>();
@@ -52,7 +63,7 @@ public class Projeto {
 	}
 
 	public Projeto(String titulo, String descricao, String stackTecnologica,
-			BigDecimal orcamentoEstimado, LocalDate prazoEntrega, Empresa empresa) {
+			BigDecimal orcamentoEstimado, LocalDate prazoEntrega, Usuario empresa) {
 		this.titulo = titulo;
 		this.descricao = descricao;
 		this.stackTecnologica = stackTecnologica;
@@ -109,11 +120,11 @@ public class Projeto {
 		this.prazoEntrega = prazoEntrega;
 	}
 
-	public Empresa getEmpresa() {
+	public Usuario getEmpresa() {
 		return empresa;
 	}
 
-	public void setEmpresa(Empresa empresa) {
+	public void setEmpresa(Usuario empresa) {
 		this.empresa = empresa;
 	}
 

@@ -27,8 +27,29 @@ jobs:
           git diff "origin/${{ github.base_ref }}...HEAD" > pr.diff
           echo "Linhas no diff: $(wc -l < pr.diff)"
 
+      - name: Verificar bypass da revisão de IA
+        id: bypass
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const labels = (context.payload.pull_request?.labels || [])
+              .map((l) => l.name);
+            const skip = labels.includes('ai-security-skip');
+            core.setOutput('skip', skip ? 'true' : 'false');
+            if (skip) {
+              core.info('Label ai-security-skip detectada — revisão de IA ignorada.');
+            }
+
+      - name: Bypass da revisão de IA
+        if: steps.bypass.outputs.skip == 'true'
+        env:
+          AI_SECURITY_SKIP_REASON: Label ai-security-skip no PR (bypass manual autorizado)
+          REVIEW_OUTPUT: review.json
+        run: python3 scripts/ci/ai_security_review.py
+
       - name: Avaliar segurança (OpenAI)
         id: review
+        if: steps.bypass.outputs.skip != 'true'
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           DIFF_PATH: pr.diff

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(#{error.404})}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<main class="container page-content text-center">
+    <h1>404</h1>
+    <h3 th:text="#{error.404}">Não encontrado</h3>
+    <p class="bar opacity" th:text="#{error.404.msg}">Página não encontrada</p>
+    <a th:href="@{/}" class="btn btn-freelancers mt-3" th:text="#{nav.home}">Início</a>
+</main>
+<div th:replace="~{fragments/layout :: footer}"></div>
+<div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>

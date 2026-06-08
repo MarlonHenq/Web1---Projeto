@@ -1,19 +1,20 @@
 package br.ufscar.dc.dsw.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 
 import br.ufscar.dc.dsw.domain.Usuario;
+import br.ufscar.dc.dsw.domain.enums.Papel;
 
-@SuppressWarnings("unchecked")
 public interface IUsuarioDAO extends CrudRepository<Usuario, Long> {
 
-	Usuario findById(long id);
+	Optional<Usuario> findByEmail(String email);
 
-	List<Usuario> findAll();
+	Optional<Usuario> findByCpf(String cpf);
 
-	Usuario save(Usuario usuario);
+	Optional<Usuario> findByCnpj(String cnpj);
 
-	void deleteById(Long id);
+	List<Usuario> findByPapel(Papel papel);
 }
