@@ -35,7 +35,16 @@ Ou no GitHub: **Settings → Branches → Add rule** para `main`:
 | `SSH_PRIVATE_KEY` | Chave privada OpenSSH (conteúdo completo) |
 | `DEPLOY_PATH` | `/var/www/freelancers` |
 | `WEB_SERVER_USER` | `www-data` (opcional) |
-| `OPENAI_API_KEY` | Chave OpenAI para avaliação de segurança nos PRs |
+| `OPENAI_API_KEY` | Chave OpenAI para avaliação de segurança nos PRs (**obrigatória** para a IA bloquear PRs com nota &lt; 7; sem ela o check passa com aviso) |
+
+### Configurar `OPENAI_API_KEY`
+
+```bash
+gh secret set OPENAI_API_KEY -R MarlonHenq/Web1---Projeto
+# cole a mesma chave usada no DC-Hub (Settings → Secrets → Actions)
+```
+
+Sem essa secret, o workflow **AI security review** roda mas **não avalia** o diff (PR liberado). Os demais secrets (`SSH_*`, `DEPLOY_PATH`) são necessários para o deploy.
 
 ### Environment `production`
 

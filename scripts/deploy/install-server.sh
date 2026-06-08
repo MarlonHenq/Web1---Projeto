@@ -58,7 +58,7 @@ chmod 600 "/home/${DEPLOY_USER}/.ssh/authorized_keys"
 
 echo "==> Configurando sudo para restart do serviço..."
 cat > /etc/sudoers.d/freelancers-deploy <<EOF
-${DEPLOY_USER} ALL=(ALL) NOPASSWD: /bin/systemctl restart freelancers, /bin/systemctl status freelancers, /bin/systemctl is-active freelancers
+${DEPLOY_USER} ALL=(ALL) NOPASSWD: /bin/systemctl restart freelancers, /bin/systemctl status freelancers, /bin/systemctl is-active freelancers, /usr/bin/systemctl restart freelancers, /usr/bin/systemctl status freelancers, /usr/bin/systemctl is-active freelancers
 EOF
 chmod 440 /etc/sudoers.d/freelancers-deploy
 
