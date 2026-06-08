@@ -4,11 +4,15 @@ Sistema para Contratação de Desenvolvedores (Freelancers) — Web1 UFSCar.
 
 Produção: [web1.marlonhenq.dev](https://web1.marlonhenq.dev)
 
-## Status atual (Sprints 1–2)
+## Status atual
 
 - Modelo único `Usuario` com papéis (`ADMIN`, `EMPRESA`, `DESENVOLVEDOR`)
-- UI escura estilo [MarlonHenq.dev](https://marlonhenq.dev)
+- UI de login basica
 - Login com Spring Security + BCrypt
+- Verificações de segurança com IA e cobertura de falhas comuns como no [DC-Hub](https://github.com/patos-ufscar/DC-Hub)
+- Deploy com CI/CD do github actions para produção
+- Sccript de migração do banco em lua baseado no do PHP do [DC-Hub](https://github.com/patos-ufscar/DC-Hub)
+
 
 ## Executar
 
