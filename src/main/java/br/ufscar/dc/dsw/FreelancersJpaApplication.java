@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -39,7 +40,10 @@ public class FreelancersJpaApplication {
 			IProjetoDAO projetoDAO,
 			IPropostaDAO propostaDAO,
 			IAnexoDAO anexoDAO,
-			PasswordEncoder passwordEncoder) {
+			PasswordEncoder passwordEncoder,
+			@Value("${app.demo.admin.password}") String adminPassword,
+			@Value("${app.demo.empresa.password}") String empresaPassword,
+			@Value("${app.demo.dev.password}") String devPassword) {
 		return args -> {
 			if (usuarioDAO.count() > 0) {
 				log.info("Dados de seed já existem, pulando demo.");
@@ -48,16 +52,16 @@ public class FreelancersJpaApplication {
 
 			log.info("Salvando usuários de demonstração");
 			Usuario admin = Usuario.admin("admin@freelancers.com",
-					passwordEncoder.encode("admin123"), "Administrador");
+					passwordEncoder.encode(adminPassword), "Administrador");
 			usuarioDAO.save(admin);
 
 			Usuario empresa = Usuario.empresa("contato@techcorp.com",
-					passwordEncoder.encode("senha123"), "TechCorp Ltda",
+					passwordEncoder.encode(empresaPassword), "TechCorp Ltda",
 					"12.345.678/0001-90", "Empresa de tecnologia especializada em soluções web");
 			usuarioDAO.save(empresa);
 
 			Usuario dev = Usuario.desenvolvedor("joao@dev.com",
-					passwordEncoder.encode("dev123"), "João Silva",
+					passwordEncoder.encode(devPassword), "João Silva",
 					"123.456.789-00", "(16) 99999-0000",
 					Sexo.M, LocalDate.of(1995, 3, 15));
 			usuarioDAO.save(dev);
@@ -87,7 +91,8 @@ public class FreelancersJpaApplication {
 			Anexo anexo = new Anexo("mockup-home.png", "/uploads/mockup-home.png", projeto);
 			anexoDAO.save(anexo);
 
-			log.info("Seed concluído. Logins: admin@freelancers.com/admin123, contato@techcorp.com/senha123, joao@dev.com/dev123");
+			log.info("Seed de demonstração concluído ({} usuários). Credenciais apenas no README local.",
+					3);
 		};
 	}
 }
