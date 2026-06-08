@@ -1,8 +1,3 @@
 git status
 git add .
-git commit -m "$(cat <<'EOF'
-Implementa entrega T5 com Spring Data JPA e SQLite.
-
-Adiciona entidades, DAOs e demo CRUD do sistema de freelancers, com Makefile e README para execução local.
-EOF
-)"
+*.password
