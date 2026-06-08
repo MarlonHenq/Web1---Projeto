@@ -116,8 +116,8 @@ local function apply_migration(db, path)
   print("OK " .. version)
 end
 
-local function main()
-  local opts = parse_args({ ... })
+local function main(args)
+  local opts = parse_args(args or {})
   local migrations_dir = opts.migrations
 
   local db_dir = opts.db:match("(.*/)")
@@ -154,4 +154,4 @@ local function main()
   print("Migrações concluídas.")
 end
 
-main(...)
+main(arg)
