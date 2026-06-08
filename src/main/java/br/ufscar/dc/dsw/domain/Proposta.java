@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import br.ufscar.dc.dsw.domain.enums.StatusProposta;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -26,12 +29,16 @@ public class Proposta {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotNull
 	@Column(nullable = false, columnDefinition = "DECIMAL(12,2)")
 	private BigDecimal valor;
 
+	@NotNull
 	@Column(nullable = false)
 	private LocalDate prazoEstimado;
 
+	@NotBlank
+	@Size(max = 2000)
 	@Column(nullable = false, length = 2000)
 	private String justificativa;
 
@@ -44,7 +51,7 @@ public class Proposta {
 
 	@ManyToOne
 	@JoinColumn(name = "desenvolvedor_id", nullable = false)
-	private Desenvolvedor desenvolvedor;
+	private Usuario desenvolvedor;
 
 	@ManyToOne
 	@JoinColumn(name = "projeto_id", nullable = false)
@@ -54,7 +61,7 @@ public class Proposta {
 	}
 
 	public Proposta(BigDecimal valor, LocalDate prazoEstimado, String justificativa,
-			LocalDate dataProposta, StatusProposta status, Desenvolvedor desenvolvedor, Projeto projeto) {
+			LocalDate dataProposta, StatusProposta status, Usuario desenvolvedor, Projeto projeto) {
 		this.valor = valor;
 		this.prazoEstimado = prazoEstimado;
 		this.justificativa = justificativa;
@@ -112,11 +119,11 @@ public class Proposta {
 		this.status = status;
 	}
 
-	public Desenvolvedor getDesenvolvedor() {
+	public Usuario getDesenvolvedor() {
 		return desenvolvedor;
 	}
 
-	public void setDesenvolvedor(Desenvolvedor desenvolvedor) {
+	public void setDesenvolvedor(Usuario desenvolvedor) {
 		this.desenvolvedor = desenvolvedor;
 	}
 

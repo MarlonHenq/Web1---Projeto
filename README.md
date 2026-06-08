@@ -1,22 +1,14 @@
 # FreelancersJPA
 
-Sistema para Contratação de Desenvolvedores (Freelancers) — entrega T5 (Spring Data JPA).
+Sistema para Contratação de Desenvolvedores (Freelancers) — Web1 UFSCar.
 
 Produção: [web1.marlonhenq.dev](https://web1.marlonhenq.dev)
 
-## CI/CD
+## Status atual (Sprints 1–2)
 
-- **PR → `main`:** Maven build/test, Gitleaks, Semgrep, avaliação de segurança por IA (nota ≥ 7/10)
-- **Merge → `main`:** deploy automático via GitHub Actions (SSH + migrações Lua + systemd)
-
-Detalhes em [docs/DEPLOY.md](docs/DEPLOY.md).
-
-## Pré-requisitos
-
-- Java 17+
-- Maven 3.8+
-
-O banco SQLite (`Freelancers.db`) é criado automaticamente na raiz do projeto ao executar.
+- Modelo único `Usuario` com papéis (`ADMIN`, `EMPRESA`, `DESENVOLVEDOR`)
+- UI escura estilo [MarlonHenq.dev](https://marlonhenq.dev)
+- Login com Spring Security + BCrypt
 
 ## Executar
 
@@ -24,12 +16,28 @@ O banco SQLite (`Freelancers.db`) é criado automaticamente na raiz do projeto a
 make run
 ```
 
-Ao subir, a aplicação executa um demo CRUD no console (Create, Read, Update, Delete).
+Acesse `http://localhost:8080`
 
-## Outros comandos
+### Logins de demonstração
+
+| Papel | E-mail | Senha |
+|-------|--------|-------|
+| Admin | admin@freelancers.com | admin123 |
+| Empresa | contato@techcorp.com | senha123 |
+| Desenvolvedor | joao@dev.com | dev123 |
+
+## Comandos
 
 ```bash
-make build    # compila o projeto
-make test     # executa os testes
-make clean    # limpa artefatos Maven
+make build
+make test
+make clean
 ```
+
+## Próximos passos (Sprint 3+)
+
+- CRUD admin (R1, R2)
+- Projetos da empresa (R3, R6)
+- Listagem pública e propostas (R4, R5, R7)
+- E-mail, i18n, validação (R8–R10)
+- REST API (AA-2)

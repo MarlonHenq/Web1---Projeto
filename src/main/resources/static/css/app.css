@@ -1,0 +1,81 @@
+.card-dark {
+    background-color: #1a1f2e;
+    border: 1px solid #2a3040;
+    color: #e0e0e0;
+}
+
+.card-dark .card-title {
+    color: chartreuse;
+    font-family: 'Oxygen', sans-serif;
+}
+
+.table-dark-custom {
+    --bs-table-bg: #1a1f2e;
+    --bs-table-color: #e0e0e0;
+    --bs-table-border-color: #2a3040;
+}
+
+.form-control, .form-select {
+    background-color: #1a1f2e;
+    border-color: #2a3040;
+    color: #e0e0e0;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: #1a1f2e;
+    border-color: chartreuse;
+    color: #e0e0e0;
+    box-shadow: 0 0 0 0.2rem rgba(127, 255, 0, 0.15);
+}
+
+.form-label {
+    color: #ccc;
+    font-family: 'Roboto', sans-serif;
+}
+
+.alert-freelancers {
+    background-color: #1a1f2e;
+    border: 1px solid #7445AD;
+    color: #e0e0e0;
+}
+
+.btn-freelancers {
+    background-color: #7445AD;
+    border-color: #7445AD;
+    color: white;
+}
+
+.btn-freelancers:hover {
+    background-color: #5c3690;
+    border-color: #5c3690;
+    color: white;
+}
+
+.btn-outline-freelancers {
+    border-color: chartreuse;
+    color: chartreuse;
+}
+
+.btn-outline-freelancers:hover {
+    background-color: chartreuse;
+    color: #12161f;
+}
+
+.navbar-freelancers {
+    background-color: #000 !important;
+}
+
+.status-aberto { background-color: #7445AD; }
+.status-aceito { background-color: #2d8a4e; }
+.status-nao-aceito { background-color: #8a2d2d; }
+
+.page-content {
+    min-height: 70vh;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.login-card {
+    max-width: 420px;
+    margin: 4rem auto;
+}
