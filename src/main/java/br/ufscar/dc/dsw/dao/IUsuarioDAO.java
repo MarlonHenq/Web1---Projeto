@@ -12,9 +12,5 @@ public interface IUsuarioDAO extends CrudRepository<Usuario, Long> {
 
 	Optional<Usuario> findByEmail(String email);
 
-	Optional<Usuario> findByCpf(String cpf);
-
-	Optional<Usuario> findByCnpj(String cnpj);
-
 	List<Usuario> findByPapel(Papel papel);
 }

@@ -1,27 +1,26 @@
 package br.ufscar.dc.dsw.domain;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
 import br.ufscar.dc.dsw.domain.enums.Papel;
-import br.ufscar.dc.dsw.domain.enums.Sexo;
 import jakarta.persistence.Column;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "Usuario")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo")
 public class Usuario {
 
 	@Id
@@ -46,64 +45,18 @@ public class Usuario {
 	@Column(nullable = false, length = 20)
 	private Papel papel;
 
-	@Column(unique = true, length = 18)
-	private String cnpj;
-
-	@Column(length = 500)
-	private String descricao;
-
-	@Column(unique = true, length = 14)
-	private String cpf;
-
-	@Column(length = 15)
-	private String telefone;
-
-	@Enumerated(EnumType.STRING)
-	@Column(length = 1)
-	private Sexo sexo;
-
-	private LocalDate dataNascimento;
-
-	@OneToMany(mappedBy = "empresa")
-	private List<Projeto> projetos = new ArrayList<>();
-
-	@OneToMany(mappedBy = "desenvolvedor")
-	private List<Proposta> propostas = new ArrayList<>();
-
 	public Usuario() {
 	}
 
+	public Usuario(String email, String senha, String nome) {
+		this.email = email;
+		this.senha = senha;
+		this.nome = nome;
+	}
+
 	public static Usuario admin(String email, String senha, String nome) {
-		Usuario u = new Usuario();
-		u.email = email;
-		u.senha = senha;
-		u.nome = nome;
+		Usuario u = new Usuario(email, senha, nome);
 		u.papel = Papel.ADMIN;
-		return u;
-	}
-
-	public static Usuario empresa(String email, String senha, String nome, String cnpj, String descricao) {
-		Usuario u = new Usuario();
-		u.email = email;
-		u.senha = senha;
-		u.nome = nome;
-		u.papel = Papel.EMPRESA;
-		u.cnpj = cnpj;
-		u.descricao = descricao;
-		return u;
-	}
-
-	public static Usuario desenvolvedor(String email, String senha, String nome, String cpf,
-			String telefone, Sexo sexo, LocalDate dataNascimento) {
-		Usuario u = new Usuario();
-		u.email = email;
-		u.senha = senha;
-		u.nome = nome;
-		u.papel = Papel.DESENVOLVEDOR;
-		u.cpf = cpf;
-		u.telefone = telefone;
-		u.sexo = sexo;
-		u.dataNascimento = dataNascimento;
 		return u;
 	}
 
@@ -145,70 +98,6 @@ public class Usuario {
 
 	public void setPapel(Papel papel) {
 		this.papel = papel;
-	}
-
-	public String getCnpj() {
-		return cnpj;
-	}
-
-	public void setCnpj(String cnpj) {
-		this.cnpj = cnpj;
-	}
-
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-
-	public String getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-
-	public String getTelefone() {
-		return telefone;
-	}
-
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
-	}
-
-	public Sexo getSexo() {
-		return sexo;
-	}
-
-	public void setSexo(Sexo sexo) {
-		this.sexo = sexo;
-	}
-
-	public LocalDate getDataNascimento() {
-		return dataNascimento;
-	}
-
-	public void setDataNascimento(LocalDate dataNascimento) {
-		this.dataNascimento = dataNascimento;
-	}
-
-	public List<Projeto> getProjetos() {
-		return projetos;
-	}
-
-	public void setProjetos(List<Projeto> projetos) {
-		this.projetos = projetos;
-	}
-
-	public List<Proposta> getPropostas() {
-		return propostas;
-	}
-
-	public void setPropostas(List<Proposta> propostas) {
-		this.propostas = propostas;
 	}
 
 	@Override
