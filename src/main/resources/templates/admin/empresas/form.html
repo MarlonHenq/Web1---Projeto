@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(#{admin.empresas.title})}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<main class="container page-content">
+    <h1 th:text="#{admin.empresas.title}">Empresas</h1>
+    <form th:action="@{/admin/empresas/salvar}" th:object="${empresa}" method="post" class="mt-4">
+        <input type="hidden" th:field="*{id}"/>
+        <input type="hidden" name="edicao" th:value="${edicao}"/>
+        <div class="mb-3">
+            <label class="form-label" th:text="#{label.nome}">Nome</label>
+            <input type="text" class="form-control" th:field="*{nome}"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" th:text="#{label.email}">E-mail</label>
+            <input type="email" class="form-control" th:field="*{email}"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" th:text="#{label.senha}">Senha</label>
+            <input type="password" class="form-control" name="senhaPlana"/>
+            <small class="text-muted" th:if="${edicao}">Deixe em branco para manter a senha atual.</small>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" th:text="#{label.cnpj}">CNPJ</label>
+            <input type="text" class="form-control" th:field="*{cnpj}"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('cnpj')}" th:errors="*{cnpj}"></div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" th:text="#{label.descricao}">Descrição</label>
+            <textarea class="form-control" th:field="*{descricao}" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-freelancers" th:text="#{btn.salvar}">Salvar</button>
+        <a th:href="@{/admin/empresas}" class="btn btn-secondary" th:text="#{btn.voltar}">Voltar</a>
+    </form>
+</main>
+<div th:replace="~{fragments/layout :: footer}"></div>
+<div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>
