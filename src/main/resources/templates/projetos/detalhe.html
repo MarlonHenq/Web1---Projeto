@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(#{projetos.detalhe})}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<main class="container page-content">
+    <h1 th:text="${projeto.titulo}">Projeto</h1>
+    <p><strong th:text="#{projetos.empresa}">Empresa</strong>: <span th:text="${projeto.empresa.nome}"></span></p>
+    <p><strong th:text="#{label.stack}">Stack</strong>: <span th:text="${projeto.stackTecnologica}"></span></p>
+    <p><strong th:text="#{label.orcamento}">Orçamento</strong>: <span th:text="${projeto.orcamentoEstimado}"></span></p>
+    <p><strong th:text="#{label.prazo}">Prazo</strong>: <span th:text="${projeto.prazoEntrega}"></span></p>
+    <p th:text="${projeto.descricao}"></p>
+    <div th:if="${!#lists.isEmpty(projeto.anexos)}" class="mb-3">
+        <h5 th:text="#{label.anexos}">Anexos</h5>
+        <div class="d-flex flex-wrap gap-2">
+            <img th:each="a : ${projeto.anexos}" th:src="${a.caminho}" th:alt="${a.nomeArquivo}" class="img-thumbnail" style="max-height:120px"/>
+        </div>
+    </div>
+    <a th:href="@{/projetos}" class="btn btn-secondary" th:text="#{btn.voltar}">Voltar</a>
+</main>
+<div th:replace="~{fragments/layout :: footer}"></div>
+<div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>

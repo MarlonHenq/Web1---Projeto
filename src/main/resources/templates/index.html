@@ -4,10 +4,12 @@
 <body>
 <div th:replace="~{fragments/layout :: navbar}"></div>
 <main class="container page-content text-center">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
     <h1 th:text="#{app.home.welcome}">Bem-vindo ao Freelancers</h1>
     <h6 class="opacity bar mt-3" th:text="#{app.home.subtitle}">Plataforma de contratação</h6>
     <div class="mt-5">
-        <a th:href="@{/login}" class="btn btn-freelancers btn-lg" th:text="#{nav.login}">Entrar</a>
+        <a th:href="@{/projetos}" class="btn btn-freelancers btn-lg me-2" th:text="#{nav.projetos}">Projetos</a>
+        <a th:href="@{/login}" class="btn btn-outline-light btn-lg" th:text="#{nav.login}">Entrar</a>
     </div>
 </main>
 <div th:replace="~{fragments/layout :: footer}"></div>

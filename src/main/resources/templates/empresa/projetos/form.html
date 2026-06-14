@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(#{btn.novo})}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<main class="container page-content">
+    <h1 th:text="#{btn.novo}">Novo Projeto</h1>
+    <form th:action="@{/empresa/projetos/salvar}" th:object="${projeto}" method="post" enctype="multipart/form-data" class="mt-4">
+        <div class="mb-3">
+            <label class="form-label" th:text="#{label.titulo}">Título</label>
+            <input type="text" class="form-control" th:field="*{titulo}"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('titulo')}" th:errors="*{titulo}"></div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" th:text="#{label.descricao}">Descrição</label>
+            <textarea class="form-control" th:field="*{descricao}" rows="4"></textarea>
+            <div class="text-danger" th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}"></div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" th:text="#{label.stack}">Stack</label>
+            <input type="text" class="form-control" th:field="*{stackTecnologica}"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('stackTecnologica')}" th:errors="*{stackTecnologica}"></div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" th:text="#{label.orcamento}">Orçamento</label>
+            <input type="number" step="0.01" class="form-control" th:field="*{orcamentoEstimado}"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('orcamentoEstimado')}" th:errors="*{orcamentoEstimado}"></div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" th:text="#{label.prazo}">Prazo</label>
+            <input type="date" class="form-control" th:field="*{prazoEntrega}"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('prazoEntrega')}" th:errors="*{prazoEntrega}"></div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" th:text="#{label.anexos}">Anexos</label>
+            <input type="file" class="form-control" name="anexos" multiple accept="image/*"/>
+        </div>
+        <button type="submit" class="btn btn-freelancers" th:text="#{btn.salvar}">Salvar</button>
+        <a th:href="@{/empresa/projetos}" class="btn btn-secondary" th:text="#{btn.voltar}">Voltar</a>
+    </form>
+</main>
+<div th:replace="~{fragments/layout :: footer}"></div>
+<div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>
