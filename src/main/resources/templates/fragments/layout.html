@@ -20,6 +20,16 @@
         <div class="collapse navbar-collapse" id="navMain">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item"><a class="nav-link bar" th:href="@{/}" th:text="#{nav.home}">Início</a></li>
+                <li class="nav-item"><a class="nav-link bar" th:href="@{/projetos}" th:text="#{nav.projetos}">Projetos</a></li>
+                <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                    <a class="nav-link bar" th:href="@{/admin/desenvolvedores}" th:text="#{nav.admin.devs}">Desenvolvedores</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                    <a class="nav-link bar" th:href="@{/admin/empresas}" th:text="#{nav.admin.empresas}">Empresas</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('EMPRESA')">
+                    <a class="nav-link bar" th:href="@{/empresa/projetos}" th:text="#{nav.empresa.projetos}">Meus Projetos</a>
+                </li>
             </ul>
             <ul class="navbar-nav">
                 <li class="nav-item" sec:authorize="!isAuthenticated()">
@@ -37,6 +47,11 @@
         </div>
     </div>
 </nav>
+
+<div th:fragment="alerts">
+    <div th:if="${sucesso}" class="alert alert-success" th:text="${sucesso}"></div>
+    <div th:if="${erro}" class="alert alert-danger" th:text="${erro}"></div>
+</div>
 
 <footer th:fragment="footer" class="footer mt-auto">
     <div class="container">

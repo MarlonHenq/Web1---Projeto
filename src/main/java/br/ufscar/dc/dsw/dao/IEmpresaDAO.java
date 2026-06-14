@@ -9,4 +9,6 @@ import br.ufscar.dc.dsw.domain.Empresa;
 public interface IEmpresaDAO extends CrudRepository<Empresa, Long> {
 
 	Optional<Empresa> findByCnpj(String cnpj);
+
+	Optional<Empresa> findByEmail(String email);
 }

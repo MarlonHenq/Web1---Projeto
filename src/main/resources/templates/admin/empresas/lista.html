@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(#{admin.empresas.title})}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<main class="container page-content">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 th:text="#{admin.empresas.title}">Empresas</h1>
+        <a th:href="@{/admin/empresas/novo}" class="btn btn-freelancers" th:text="#{btn.novo}">Novo</a>
+    </div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th th:text="#{label.nome}">Nome</th>
+            <th th:text="#{label.email}">E-mail</th>
+            <th th:text="#{label.cnpj}">CNPJ</th>
+            <th th:text="#{label.acoes}">Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="e : ${empresas}">
+            <td th:text="${e.nome}"></td>
+            <td th:text="${e.email}"></td>
+            <td th:text="${e.cnpj}"></td>
+            <td>
+                <a th:href="@{/admin/empresas/{id}/editar(id=${e.id})}" class="btn btn-sm btn-outline-primary" th:text="#{btn.editar}">Editar</a>
+                <form th:action="@{/admin/empresas/{id}/excluir(id=${e.id})}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-sm btn-outline-danger" th:text="#{btn.excluir}">Excluir</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+<div th:replace="~{fragments/layout :: footer}"></div>
+<div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>

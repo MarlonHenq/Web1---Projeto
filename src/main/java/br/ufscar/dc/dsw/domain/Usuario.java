@@ -3,6 +3,7 @@ package br.ufscar.dc.dsw.domain;
 import br.ufscar.dc.dsw.domain.enums.Papel;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -21,6 +22,7 @@ import jakarta.validation.constraints.Size;
 @Table(name = "Usuario")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo")
+@DiscriminatorValue("ADMIN")
 public class Usuario {
 
 	@Id
