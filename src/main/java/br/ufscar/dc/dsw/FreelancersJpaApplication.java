@@ -18,6 +18,8 @@ import br.ufscar.dc.dsw.dao.IProjetoDAO;
 import br.ufscar.dc.dsw.dao.IPropostaDAO;
 import br.ufscar.dc.dsw.dao.IUsuarioDAO;
 import br.ufscar.dc.dsw.domain.Anexo;
+import br.ufscar.dc.dsw.domain.Desenvolvedor;
+import br.ufscar.dc.dsw.domain.Empresa;
 import br.ufscar.dc.dsw.domain.Projeto;
 import br.ufscar.dc.dsw.domain.Proposta;
 import br.ufscar.dc.dsw.domain.Usuario;
@@ -55,12 +57,12 @@ public class FreelancersJpaApplication {
 					passwordEncoder.encode(adminPassword), "Administrador");
 			usuarioDAO.save(admin);
 
-			Usuario empresa = Usuario.empresa("contato@techcorp.com",
+			Empresa empresa = new Empresa("contato@techcorp.com",
 					passwordEncoder.encode(empresaPassword), "TechCorp Ltda",
 					"12.345.678/0001-90", "Empresa de tecnologia especializada em soluções web");
 			usuarioDAO.save(empresa);
 
-			Usuario dev = Usuario.desenvolvedor("joao@dev.com",
+			Desenvolvedor dev = new Desenvolvedor("joao@dev.com",
 					passwordEncoder.encode(devPassword), "João Silva",
 					"123.456.789-00", "(16) 99999-0000",
 					Sexo.M, LocalDate.of(1995, 3, 15));

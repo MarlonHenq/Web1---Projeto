@@ -51,7 +51,7 @@ public class Projeto {
 
 	@ManyToOne
 	@JoinColumn(name = "empresa_id", nullable = false)
-	private Usuario empresa;
+	private Empresa empresa;
 
 	@OneToMany(mappedBy = "projeto")
 	private List<Proposta> propostas = new ArrayList<>();
@@ -63,7 +63,7 @@ public class Projeto {
 	}
 
 	public Projeto(String titulo, String descricao, String stackTecnologica,
-			BigDecimal orcamentoEstimado, LocalDate prazoEntrega, Usuario empresa) {
+			BigDecimal orcamentoEstimado, LocalDate prazoEntrega, Empresa empresa) {
 		this.titulo = titulo;
 		this.descricao = descricao;
 		this.stackTecnologica = stackTecnologica;
@@ -120,11 +120,11 @@ public class Projeto {
 		this.prazoEntrega = prazoEntrega;
 	}
 
-	public Usuario getEmpresa() {
+	public Empresa getEmpresa() {
 		return empresa;
 	}
 
-	public void setEmpresa(Usuario empresa) {
+	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
 	}
 

@@ -51,7 +51,7 @@ public class Proposta {
 
 	@ManyToOne
 	@JoinColumn(name = "desenvolvedor_id", nullable = false)
-	private Usuario desenvolvedor;
+	private Desenvolvedor desenvolvedor;
 
 	@ManyToOne
 	@JoinColumn(name = "projeto_id", nullable = false)
@@ -61,7 +61,7 @@ public class Proposta {
 	}
 
 	public Proposta(BigDecimal valor, LocalDate prazoEstimado, String justificativa,
-			LocalDate dataProposta, StatusProposta status, Usuario desenvolvedor, Projeto projeto) {
+			LocalDate dataProposta, StatusProposta status, Desenvolvedor desenvolvedor, Projeto projeto) {
 		this.valor = valor;
 		this.prazoEstimado = prazoEstimado;
 		this.justificativa = justificativa;
@@ -119,11 +119,11 @@ public class Proposta {
 		this.status = status;
 	}
 
-	public Usuario getDesenvolvedor() {
+	public Desenvolvedor getDesenvolvedor() {
 		return desenvolvedor;
 	}
 
-	public void setDesenvolvedor(Usuario desenvolvedor) {
+	public void setDesenvolvedor(Desenvolvedor desenvolvedor) {
 		this.desenvolvedor = desenvolvedor;
 	}
 
