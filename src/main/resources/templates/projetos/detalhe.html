@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/layout :: head(#{projetos.detalhe})}"></head>
 <body>
 <div th:replace="~{fragments/layout :: navbar}"></div>
 <main class="container page-content">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
     <h1 th:text="${projeto.titulo}">Projeto</h1>
     <p><strong th:text="#{projetos.empresa}">Empresa</strong>: <span th:text="${projeto.empresa.nome}"></span></p>
     <p><strong th:text="#{label.stack}">Stack</strong>: <span th:text="${projeto.stackTecnologica}"></span></p>
@@ -16,6 +18,17 @@
             <img th:each="a : ${projeto.anexos}" th:src="${a.caminho}" th:alt="${a.nomeArquivo}" class="img-thumbnail" style="max-height:120px"/>
         </div>
     </div>
+
+    <div sec:authorize="hasRole('DESENVOLVEDOR')" class="mb-3">
+        <a th:if="${jaProposto == null or !jaProposto}"
+           th:href="@{/dev/propostas/novo/{id}(id=${projeto.id})}"
+           class="btn btn-freelancers" th:text="#{btn.propor}">Enviar Proposta</a>
+        <div th:if="${jaProposto}" class="alert alert-info">
+            <span th:text="#{proposta.ja.enviada}">Você já enviou uma proposta para este projeto.</span>
+            <a th:href="@{/dev/propostas}" th:text="#{propostas.title}">Minhas Propostas</a>
+        </div>
+    </div>
+
     <a th:href="@{/projetos}" class="btn btn-secondary" th:text="#{btn.voltar}">Voltar</a>
 </main>
 <div th:replace="~{fragments/layout :: footer}"></div>

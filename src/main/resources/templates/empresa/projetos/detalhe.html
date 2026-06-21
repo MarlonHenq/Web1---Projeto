@@ -16,7 +16,46 @@
             <img th:each="a : ${projeto.anexos}" th:src="${a.caminho}" th:alt="${a.nomeArquivo}" class="img-thumbnail" style="max-height:120px"/>
         </div>
     </div>
-    <a th:href="@{/empresa/projetos}" class="btn btn-secondary" th:text="#{btn.voltar}">Voltar</a>
+
+    <h3 class="mt-4" th:text="#{propostas.recebidas}">Propostas recebidas</h3>
+    <div th:each="p : ${propostas}" class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title" th:text="${p.desenvolvedor.nome}">Dev</h5>
+            <p class="mb-1"><strong th:text="#{label.email}">E-mail</strong>: <span th:text="${p.desenvolvedor.email}"></span></p>
+            <p class="mb-1"><strong th:text="#{label.valor}">Valor</strong>: <span th:text="${p.valor}"></span></p>
+            <p class="mb-1"><strong th:text="#{label.prazoEstimado}">Prazo</strong>: <span th:text="${p.prazoEstimado}"></span></p>
+            <p class="mb-1"><strong th:text="#{label.dataProposta}">Data</strong>: <span th:text="${p.dataProposta}"></span></p>
+            <p class="mb-1"><strong th:text="#{label.status}">Status</strong>:
+                <span th:if="${p.status.name() == 'ABERTO'}" class="badge bg-warning text-dark" th:text="#{status.aberto}">Aberto</span>
+                <span th:if="${p.status.name() == 'NAO_ACEITO'}" class="badge bg-danger" th:text="#{status.nao_aceito}">Não aceito</span>
+                <span th:if="${p.status.name() == 'ACEITO'}" class="badge bg-success" th:text="#{status.aceito}">Aceito</span>
+            </p>
+            <p class="mb-2"><strong th:text="#{label.justificativa}">Justificativa</strong>: <span th:text="${p.justificativa}"></span></p>
+
+            <div th:if="${p.status.name() == 'ABERTO'}">
+                <form th:action="@{/empresa/projetos/{pid}/propostas/{id}/analisar(pid=${projeto.id}, id=${p.id})}" method="post" class="border-top pt-3">
+                    <p class="fw-bold" th:text="#{propostas.analisar}">Analisar proposta</p>
+                    <div class="mb-3">
+                        <label class="form-label" th:text="#{propostas.mensagem}">Mensagem / contraproposta</label>
+                        <textarea class="form-control" name="mensagem" rows="2"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" th:text="#{propostas.horario}">Horário da reunião</label>
+                        <input type="text" class="form-control" name="horarioReuniao" placeholder="Ex: 25/06/2026 às 14:00"/>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" th:text="#{propostas.link}">Link da videoconferência</label>
+                        <input type="url" class="form-control" name="linkVideoconferencia" placeholder="https://meet.google.com/..."/>
+                    </div>
+                    <button type="submit" name="status" value="ACEITO" class="btn btn-success me-2" th:text="#{propostas.aceitar}">Aceitar</button>
+                    <button type="submit" name="status" value="NAO_ACEITO" class="btn btn-danger" th:text="#{propostas.rejeitar}">Não aceitar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <p th:if="${#lists.isEmpty(propostas)}" class="text-muted" th:text="#{propostas.nenhuma}">Nenhuma proposta recebida.</p>
+
+    <a th:href="@{/empresa/projetos}" class="btn btn-secondary mt-3" th:text="#{btn.voltar}">Voltar</a>
 </main>
 <div th:replace="~{fragments/layout :: footer}"></div>
 <div th:replace="~{fragments/layout :: scripts}"></div>
