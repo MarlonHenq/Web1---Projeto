@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,9 +27,10 @@ public class AnexoService {
 	private final IAnexoDAO anexoDAO;
 	private final Path uploadDir;
 
-	public AnexoService(IAnexoDAO anexoDAO) {
+	public AnexoService(IAnexoDAO anexoDAO,
+			@Value("${app.upload.dir:uploads}") String uploadDirPath) {
 		this.anexoDAO = anexoDAO;
-		this.uploadDir = Paths.get("uploads").toAbsolutePath().normalize();
+		this.uploadDir = Paths.get(uploadDirPath).toAbsolutePath().normalize();
 		try {
 			Files.createDirectories(uploadDir);
 		} catch (IOException e) {
@@ -46,28 +48,32 @@ public class AnexoService {
 		if (arquivos == null || arquivos.isEmpty()) {
 			return;
 		}
+		for (MultipartFile arquivo : arquivos) {
+			if (!arquivo.isEmpty()) {
+				salvarAnexo(projeto, arquivo);
+			}
+		}
+	}
+
+	@Transactional
+	public void salvarAnexo(Projeto projeto, MultipartFile arquivo) {
 		long existentes = anexoDAO.findByProjeto(projeto).size();
-		if (existentes + arquivos.size() > MAX_ANEXOS) {
+		if (existentes >= MAX_ANEXOS) {
 			throw new BusinessException("Máximo de " + MAX_ANEXOS + " anexos por projeto.");
 		}
-		for (MultipartFile arquivo : arquivos) {
-			if (arquivo.isEmpty()) {
-				continue;
-			}
-			String nomeOriginal = arquivo.getOriginalFilename();
-			if (nomeOriginal == null || !extensaoPermitida(nomeOriginal)) {
-				throw new BusinessException("Formato de arquivo não permitido: " + nomeOriginal);
-			}
-			String nomeUnico = UUID.randomUUID() + "_" + nomeOriginal;
-			Path destino = uploadDir.resolve(nomeUnico);
-			try {
-				arquivo.transferTo(destino);
-			} catch (IOException e) {
-				throw new BusinessException("Erro ao salvar anexo: " + nomeOriginal);
-			}
-			Anexo anexo = new Anexo(nomeOriginal, "/uploads/" + nomeUnico, projeto);
-			anexoDAO.save(anexo);
+		String nomeOriginal = arquivo.getOriginalFilename();
+		if (nomeOriginal == null || !extensaoPermitida(nomeOriginal)) {
+			throw new BusinessException("Formato não permitido (use png, jpg, jpeg, gif ou webp): " + nomeOriginal);
 		}
+		String nomeUnico = UUID.randomUUID() + "_" + nomeOriginal;
+		Path destino = uploadDir.resolve(nomeUnico);
+		try {
+			arquivo.transferTo(destino);
+		} catch (IOException e) {
+			throw new BusinessException("Erro ao salvar anexo: " + nomeOriginal);
+		}
+		Anexo anexo = new Anexo(nomeOriginal, "/uploads/" + nomeUnico, projeto);
+		anexoDAO.save(anexo);
 	}
 
 	private boolean extensaoPermitida(String nome) {

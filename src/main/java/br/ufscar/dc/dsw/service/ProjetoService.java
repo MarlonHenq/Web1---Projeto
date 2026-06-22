@@ -1,5 +1,6 @@
 package br.ufscar.dc.dsw.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import br.ufscar.dc.dsw.dao.IProjetoDAO;
 import br.ufscar.dc.dsw.domain.Empresa;
 import br.ufscar.dc.dsw.domain.Projeto;
+import br.ufscar.dc.dsw.exception.BusinessException;
 import br.ufscar.dc.dsw.exception.ResourceNotFoundException;
 
 @Service
@@ -24,13 +26,17 @@ public class ProjetoService {
 
 	@Transactional(readOnly = true)
 	public List<Projeto> findAll() {
-		return (List<Projeto>) projetoDAO.findAll();
+		List<Projeto> projetos = (List<Projeto>) projetoDAO.findAll();
+		projetos.forEach(this::inicializarDetalhes);
+		return projetos;
 	}
 
 	@Transactional(readOnly = true)
 	public Projeto findById(Long id) {
-		return projetoDAO.findById(id)
+		Projeto projeto = projetoDAO.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Projeto não encontrado: " + id));
+		inicializarDetalhes(projeto);
+		return projeto;
 	}
 
 	@Transactional(readOnly = true)
@@ -44,10 +50,35 @@ public class ProjetoService {
 	}
 
 	@Transactional
-	public Projeto save(Projeto projeto, List<MultipartFile> anexos) {
+	public Projeto save(Projeto projeto, List<MultipartFile> anexos, List<String> avisosAnexos) {
 		Projeto salvo = projetoDAO.save(projeto);
-		anexoService.salvarAnexos(salvo, anexos);
+		avisosAnexos.addAll(salvarAnexosComAvisos(salvo, anexos));
 		return salvo;
+	}
+
+	private List<String> salvarAnexosComAvisos(Projeto projeto, List<MultipartFile> anexos) {
+		List<String> avisos = new ArrayList<>();
+		if (anexos == null) {
+			return avisos;
+		}
+		for (MultipartFile arquivo : anexos) {
+			if (arquivo.isEmpty()) {
+				continue;
+			}
+			try {
+				anexoService.salvarAnexo(projeto, arquivo);
+			} catch (BusinessException ex) {
+				avisos.add(ex.getMessage());
+			}
+		}
+		return avisos;
+	}
+
+	private void inicializarDetalhes(Projeto projeto) {
+		if (projeto.getEmpresa() != null) {
+			projeto.getEmpresa().getNome();
+		}
+		projeto.getAnexos().size();
 	}
 
 	@Transactional

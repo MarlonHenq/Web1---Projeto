@@ -32,12 +32,16 @@ public class PropostaService {
 
 	@Transactional(readOnly = true)
 	public List<Proposta> findByDesenvolvedor(Desenvolvedor desenvolvedor) {
-		return propostaDAO.findByDesenvolvedor(desenvolvedor);
+		List<Proposta> propostas = propostaDAO.findByDesenvolvedor(desenvolvedor);
+		propostas.forEach(this::inicializarDetalhes);
+		return propostas;
 	}
 
 	@Transactional(readOnly = true)
 	public List<Proposta> findByProjeto(Projeto projeto) {
-		return propostaDAO.findByProjeto(projeto);
+		List<Proposta> propostas = propostaDAO.findByProjeto(projeto);
+		propostas.forEach(this::inicializarDetalhes);
+		return propostas;
 	}
 
 	@Transactional(readOnly = true)
@@ -102,5 +106,18 @@ public class PropostaService {
 				form.getHorarioReuniao(), form.getLinkVideoconferencia());
 
 		return proposta;
+	}
+
+	private void inicializarDetalhes(Proposta proposta) {
+		if (proposta.getProjeto() != null) {
+			proposta.getProjeto().getTitulo();
+			if (proposta.getProjeto().getEmpresa() != null) {
+				proposta.getProjeto().getEmpresa().getNome();
+			}
+		}
+		if (proposta.getDesenvolvedor() != null) {
+			proposta.getDesenvolvedor().getNome();
+			proposta.getDesenvolvedor().getEmail();
+		}
 	}
 }

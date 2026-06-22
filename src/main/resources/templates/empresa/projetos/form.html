@@ -38,7 +38,8 @@
         </div>
         <div class="mb-3">
             <label class="form-label" th:text="#{label.anexos}">Anexos</label>
-            <input type="file" class="form-control" name="anexos" multiple accept="image/*"/>
+            <input type="file" class="form-control" name="anexos" multiple accept="image/png,image/jpeg,image/gif,image/webp"/>
+            <small class="text-muted" th:text="#{projeto.anexos.hint}">Somente imagens png, jpg, jpeg, gif ou webp (máx. 10).</small>
         </div>
         <button type="submit" class="btn btn-freelancers" th:text="#{btn.salvar}">Salvar</button>
         <a th:href="@{/empresa/projetos}" class="btn btn-secondary" th:text="#{btn.voltar}">Voltar</a>

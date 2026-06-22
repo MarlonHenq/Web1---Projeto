@@ -4,6 +4,7 @@
 <body>
 <div th:replace="~{fragments/layout :: navbar}"></div>
 <main class="container page-content">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
     <h1 th:text="#{admin.empresas.title}">Empresas</h1>
     <form th:action="@{/admin/empresas/salvar}" th:object="${empresa}" method="post" class="mt-4">
         <input type="hidden" th:field="*{id}"/>
