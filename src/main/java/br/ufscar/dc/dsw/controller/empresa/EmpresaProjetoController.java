@@ -108,8 +108,11 @@ public class EmpresaProjetoController {
 		form.setLinkVideoconferencia(linkVideoconferencia);
 		try {
 			Empresa empresa = usuarioLogadoService.getEmpresaLogada();
-			propostaService.analisar(propostaId, empresa, form);
+			boolean emailEnviado = propostaService.analisar(propostaId, empresa, form);
 			redirect.addFlashAttribute("sucesso", "proposta.sucesso.analisada");
+			if (!emailEnviado) {
+				redirect.addFlashAttribute("erro", "proposta.aviso.email");
+			}
 		} catch (BusinessException ex) {
 			redirect.addFlashAttribute("erro", ex.getMessage());
 		}
