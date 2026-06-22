@@ -7,7 +7,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import br.ufscar.dc.dsw.domain.Proposta;
 import br.ufscar.dc.dsw.domain.enums.StatusProposta;
 
 @Service
@@ -27,27 +26,35 @@ public class EmailService {
 		this.mailSender = mailSender;
 	}
 
-	public void notificarDecisaoProposta(Proposta proposta, String mensagem, String horarioReuniao,
+	public boolean notificarDecisaoProposta(String destinatario, String devNome, String projetoTitulo,
+			String empresaNome, StatusProposta status, String mensagem, String horarioReuniao,
 			String linkVideoconferencia) {
-		String destinatario = proposta.getDesenvolvedor().getEmail();
-		String projeto = proposta.getProjeto().getTitulo();
-		String assunto = buildAssunto(proposta.getStatus(), projeto);
-		String corpo = buildCorpo(proposta, mensagem, horarioReuniao, linkVideoconferencia);
+		String assunto = buildAssunto(status, projetoTitulo);
+		String corpo = buildCorpo(devNome, projetoTitulo, empresaNome, status, mensagem, horarioReuniao,
+				linkVideoconferencia);
 
-		if (enabled) {
+		if (!enabled) {
+			log.info("=== E-mail (modo demo — MAIL_ENABLED=false) ===");
+			log.info("Para: {}", destinatario);
+			log.info("Assunto: {}", assunto);
+			log.info("Corpo:\n{}", corpo);
+			log.info("=============================================");
+			return true;
+		}
+
+		try {
 			SimpleMailMessage message = new SimpleMailMessage();
 			message.setFrom(from);
 			message.setTo(destinatario);
 			message.setSubject(assunto);
 			message.setText(corpo);
 			mailSender.send(message);
-			log.info("E-mail enviado para {} sobre proposta do projeto '{}'", destinatario, projeto);
-		} else {
-			log.info("=== E-mail (modo demo — MAIL_ENABLED=false) ===");
-			log.info("Para: {}", destinatario);
-			log.info("Assunto: {}", assunto);
-			log.info("Corpo:\n{}", corpo);
-			log.info("=============================================");
+			log.info("E-mail enviado para {} sobre proposta do projeto '{}'", destinatario, projetoTitulo);
+			return true;
+		} catch (Exception ex) {
+			log.error("Falha ao enviar e-mail para {} sobre projeto '{}': {}", destinatario, projetoTitulo,
+					ex.getMessage(), ex);
+			return false;
 		}
 	}
 
@@ -58,14 +65,14 @@ public class EmailService {
 		return "Proposta não aceita — " + projeto;
 	}
 
-	private String buildCorpo(Proposta proposta, String mensagem, String horarioReuniao,
-			String linkVideoconferencia) {
+	private String buildCorpo(String devNome, String projetoTitulo, String empresaNome, StatusProposta status,
+			String mensagem, String horarioReuniao, String linkVideoconferencia) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("Olá, ").append(proposta.getDesenvolvedor().getNome()).append("!\n\n");
-		sb.append("Projeto: ").append(proposta.getProjeto().getTitulo()).append("\n");
-		sb.append("Empresa: ").append(proposta.getProjeto().getEmpresa().getNome()).append("\n\n");
+		sb.append("Olá, ").append(devNome).append("!\n\n");
+		sb.append("Projeto: ").append(projetoTitulo).append("\n");
+		sb.append("Empresa: ").append(empresaNome).append("\n\n");
 
-		if (proposta.getStatus() == StatusProposta.ACEITO) {
+		if (status == StatusProposta.ACEITO) {
 			sb.append("Sua proposta foi ACEITA.\n\n");
 			sb.append("Horário da reunião: ").append(horarioReuniao).append("\n");
 			sb.append("Link da videoconferência: ").append(linkVideoconferencia).append("\n");

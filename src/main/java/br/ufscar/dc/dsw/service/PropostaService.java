@@ -73,7 +73,7 @@ public class PropostaService {
 	}
 
 	@Transactional
-	public Proposta analisar(Long propostaId, Empresa empresa, PropostaAnaliseForm form) {
+	public boolean analisar(Long propostaId, Empresa empresa, PropostaAnaliseForm form) {
 		Proposta proposta = findById(propostaId);
 		Projeto projeto = proposta.getProjeto();
 
@@ -102,10 +102,16 @@ public class PropostaService {
 		proposta.setStatus(novoStatus);
 		propostaDAO.save(proposta);
 
-		emailService.notificarDecisaoProposta(proposta, form.getMensagem(),
-				form.getHorarioReuniao(), form.getLinkVideoconferencia());
+		String destinatario = proposta.getDesenvolvedor().getEmail();
+		String devNome = proposta.getDesenvolvedor().getNome();
+		String projetoTitulo = projeto.getTitulo();
+		String empresaNome = projeto.getEmpresa().getNome();
 
-		return proposta;
+		boolean emailEnviado = emailService.notificarDecisaoProposta(destinatario, devNome, projetoTitulo,
+				empresaNome, novoStatus, form.getMensagem(), form.getHorarioReuniao(),
+				form.getLinkVideoconferencia());
+
+		return emailEnviado;
 	}
 
 	private void inicializarDetalhes(Proposta proposta) {
