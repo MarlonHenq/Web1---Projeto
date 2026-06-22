@@ -73,6 +73,35 @@
     min-height: 70vh;
     padding-top: 2rem;
     padding-bottom: 2rem;
+    color: #fff;
+}
+
+.page-content p,
+.page-content strong,
+.page-content span,
+.page-content li,
+.page-content .card-body,
+.page-content .card-title {
+    color: #fff;
+}
+
+.page-content .card {
+    background-color: #1a1f2e;
+    border: 1px solid #2a3040;
+}
+
+.page-content .text-muted {
+    color: #bbb !important;
+}
+
+.page-content .alert-info {
+    background-color: #1a1f2e;
+    border-color: #2a3040;
+    color: #fff;
+}
+
+.page-content .alert-info a {
+    color: chartreuse;
 }
 
 .login-card {
