@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(#{cadastro.title})}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<main class="container page-content">
+    <h1 th:text="#{cadastro.title}">Criar conta</h1>
+    <p class="text-muted" th:text="#{cadastro.subtitle}">Escolha o tipo de conta que deseja criar.</p>
+    <div class="row mt-4 g-3">
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title" th:text="#{cadastro.empresa}">Sou empresa</h5>
+                    <p class="card-text" th:text="#{cadastro.empresa.desc}">Cadastre sua empresa para publicar projetos e contratar desenvolvedores.</p>
+                    <a th:href="@{/cadastro/empresa}" class="btn btn-freelancers mt-auto" th:text="#{cadastro.empresa.btn}">Criar conta empresa</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title" th:text="#{cadastro.desenvolvedor}">Sou desenvolvedor</h5>
+                    <p class="card-text" th:text="#{cadastro.desenvolvedor.desc}">Cadastre-se para enviar propostas em projetos disponíveis.</p>
+                    <a th:href="@{/cadastro/desenvolvedor}" class="btn btn-freelancers mt-auto" th:text="#{cadastro.desenvolvedor.btn}">Criar conta desenvolvedor</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p class="mt-4">
+        <span th:text="#{cadastro.ja.tem}">Já tem conta?</span>
+        <a th:href="@{/login}" th:text="#{nav.login}">Entrar</a>
+    </p>
+</main>
+<div th:replace="~{fragments/layout :: footer}"></div>
+<div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>
