@@ -24,7 +24,7 @@ public class SecurityConfig {
 		http.authorizeHttpRequests(authz -> authz
 				.requestMatchers("/css/**", "/js/**", "/uploads/**", "/error/**").permitAll()
 				.requestMatchers("/", "/projetos", "/projetos/**").permitAll()
-				.requestMatchers("/login").permitAll()
+				.requestMatchers("/login", "/cadastro", "/cadastro/**").permitAll()
 				.requestMatchers("/admin/**").hasRole("ADMIN")
 				.requestMatchers("/empresa/**").hasRole("EMPRESA")
 				.requestMatchers("/dev/**").hasRole("DESENVOLVEDOR")

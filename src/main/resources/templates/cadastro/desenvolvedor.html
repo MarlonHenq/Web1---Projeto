@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(#{cadastro.desenvolvedor})}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<main class="container page-content">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <div th:if="${erro}" class="alert alert-danger" th:text="${#messages.msgOrNull(erro) != null ? #messages.msg(erro) : erro}"></div>
+    <h1 th:text="#{cadastro.desenvolvedor}">Criar conta — Desenvolvedor</h1>
+    <form th:action="@{/cadastro/desenvolvedor}" th:object="${desenvolvedor}" method="post" class="mt-4">
+        <div class="mb-3">
+            <label class="form-label" th:text="#{label.nome}">Nome</label>
+            <input type="text" class="form-control" th:field="*{nome}"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" th:text="#{label.email}">E-mail</label>
+            <input type="email" class="form-control" th:field="*{email}"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" th:text="#{label.senha}">Senha</label>
+            <input type="password" class="form-control" name="senhaPlana" required/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" th:text="#{label.cpf}">CPF</label>
+            <input type="text" class="form-control" th:field="*{cpf}"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}"></div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" th:text="#{label.telefone}">Telefone</label>
+            <input type="text" class="form-control" th:field="*{telefone}"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" th:text="#{label.sexo}">Sexo</label>
+            <select class="form-select" th:field="*{sexo}">
+                <option th:each="s : ${T(br.ufscar.dc.dsw.domain.enums.Sexo).values()}" th:value="${s}" th:text="${s}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" th:text="#{label.dataNascimento}">Data de nascimento</label>
+            <input type="date" class="form-control" th:field="*{dataNascimento}"/>
+        </div>
+        <button type="submit" class="btn btn-freelancers" th:text="#{cadastro.submit}">Criar conta</button>
+        <a th:href="@{/cadastro}" class="btn btn-secondary" th:text="#{btn.voltar}">Voltar</a>
+    </form>
+</main>
+<div th:replace="~{fragments/layout :: footer}"></div>
+<div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>
