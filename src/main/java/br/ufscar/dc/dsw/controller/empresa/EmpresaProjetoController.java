@@ -1,5 +1,6 @@
 package br.ufscar.dc.dsw.controller.empresa;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -68,8 +69,12 @@ public class EmpresaProjetoController {
 			Empresa empresa = usuarioLogadoService.getEmpresaLogada();
 			projeto.setEmpresa(empresa);
 			List<MultipartFile> files = anexos != null ? anexos : Collections.emptyList();
-			projetoService.save(projeto, files);
+			List<String> avisosAnexos = new ArrayList<>();
+			projetoService.save(projeto, files, avisosAnexos);
 			redirect.addFlashAttribute("sucesso", "projeto.sucesso.criado");
+			if (!avisosAnexos.isEmpty()) {
+				redirect.addFlashAttribute("erro", String.join(" ", avisosAnexos));
+			}
 		} catch (BusinessException ex) {
 			redirect.addFlashAttribute("erro", ex.getMessage());
 			return "redirect:/empresa/projetos/novo";
