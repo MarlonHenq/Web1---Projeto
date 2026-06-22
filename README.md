@@ -80,7 +80,26 @@ make clean
 | Público | `/`, `/projetos/**` | Listagem e detalhe de projetos (R4) |
 | ADMIN | `/admin/**` | CRUD de desenvolvedores (R1) e empresas (R2) |
 | EMPRESA | `/empresa/**` | Cadastro/listagem de projetos (R3, R6) |
-| DESENVOLVEDOR | `/dev/**` | Propostas (R5, R7 — pendente) |
+| DESENVOLVEDOR | `/dev/**` | Propostas (R5, R7) e análise pela empresa (R8) |
+
+### Configuração de e-mail (Brevo) — R8
+
+Por padrão, e-mails são **impressos no log do terminal** (`MAIL_ENABLED=false`), útil para demo local.
+
+Para envio real via [Brevo](https://www.brevo.com/) (tier gratuito):
+
+1. Crie uma conta gratuita em brevo.com
+2. Em *SMTP & API* → gere a chave SMTP
+3. Defina as variáveis antes de `make run`:
+
+```bash
+export MAIL_ENABLED=true
+export MAIL_HOST=smtp-relay.brevo.com
+export MAIL_PORT=587
+export MAIL_USERNAME=seu-login-smtp@exemplo.com
+export MAIL_PASSWORD=sua-chave-smtp
+export MAIL_FROM=seu-email-verificado@exemplo.com
+```
 
 ### REST API (AA-2) — pendente
 
@@ -94,12 +113,12 @@ Base URL prevista: `http://localhost:8080/api` (sem autenticação).
 | R2 | CRUD empresas (admin) | Implementado |
 | R3 | Cadastro de projetos + anexos (empresa) | Implementado |
 | R4 | Listagem pública + filtro por stack | Implementado |
-| R5 | Proposta de serviço (desenvolvedor) | Pendente |
+| R5 | Proposta de serviço (desenvolvedor) | Implementado |
 | R6 | Listagem de projetos da empresa | Implementado |
-| R7 | Listagem de propostas do desenvolvedor | Pendente |
-| R8 | Análise de propostas + e-mail | Pendente |
-| R9 | Internacionalização PT + EN | Pendente |
-| R10 | Validação e tratamento de erros | Parcial |
+| R7 | Listagem de propostas do desenvolvedor | Implementado |
+| R8 | Análise de propostas + e-mail | Implementado |
+| R9 | Internacionalização PT + EN | Implementado |
+| R10 | Validação e tratamento de erros | Implementado |
 | AA-2 | REST API | Pendente |
 
 ### Deploy em produção

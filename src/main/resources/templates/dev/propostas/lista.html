@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(#{propostas.title})}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<main class="container page-content">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+    <h1 th:text="#{propostas.title}">Minhas Propostas</h1>
+    <table class="table table-striped mt-4">
+        <thead>
+        <tr>
+            <th th:text="#{label.titulo}">Projeto</th>
+            <th th:text="#{projetos.empresa}">Empresa</th>
+            <th th:text="#{label.valor}">Valor</th>
+            <th th:text="#{label.prazoEstimado}">Prazo</th>
+            <th th:text="#{label.dataProposta}">Data</th>
+            <th th:text="#{label.status}">Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p : ${propostas}">
+            <td th:text="${p.projeto.titulo}"></td>
+            <td th:text="${p.projeto.empresa.nome}"></td>
+            <td th:text="${p.valor}"></td>
+            <td th:text="${p.prazoEstimado}"></td>
+            <td th:text="${p.dataProposta}"></td>
+            <td>
+                <span th:if="${p.status.name() == 'ABERTO'}" class="badge bg-warning text-dark" th:text="#{status.aberto}">Aberto</span>
+                <span th:if="${p.status.name() == 'NAO_ACEITO'}" class="badge bg-danger" th:text="#{status.nao_aceito}">Não aceito</span>
+                <span th:if="${p.status.name() == 'ACEITO'}" class="badge bg-success" th:text="#{status.aceito}">Aceito</span>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(propostas)}">
+            <td colspan="6" class="text-muted" th:text="#{propostas.vazia}">Nenhuma proposta cadastrada.</td>
+        </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/projetos}" class="btn btn-secondary" th:text="#{nav.projetos}">Projetos</a>
+</main>
+<div th:replace="~{fragments/layout :: footer}"></div>
+<div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>

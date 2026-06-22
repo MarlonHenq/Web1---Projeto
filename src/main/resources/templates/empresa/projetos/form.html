@@ -4,8 +4,13 @@
 <body>
 <div th:replace="~{fragments/layout :: navbar}"></div>
 <main class="container page-content">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
     <h1 th:text="#{btn.novo}">Novo Projeto</h1>
     <form th:action="@{/empresa/projetos/salvar}" th:object="${projeto}" method="post" enctype="multipart/form-data" class="mt-4">
+        <div class="mb-3">
+            <label class="form-label" th:text="#{label.cnpj}">CNPJ</label>
+            <input type="text" class="form-control" th:value="${empresa.cnpj}" readonly/>
+        </div>
         <div class="mb-3">
             <label class="form-label" th:text="#{label.titulo}">Título</label>
             <input type="text" class="form-control" th:field="*{titulo}"/>
