@@ -1,0 +1,305 @@
+{
+	"info": {
+		"name": "Freelancers REST API (T7/AA-2)",
+		"description": "Collection da REST API do sistema de Contratacao de Desenvolvedores (Freelancers) - Web1 UFSCar.\n\nBase URL: {{baseUrl}} (default http://localhost:8080)\nNenhuma autenticacao e necessaria (Obs 2 da atividade AA-2).\n\nIDs do seed de demonstracao: ADMIN=1, EMPRESA=2 (TechCorp), DESENVOLVEDOR=3 (Joao Silva), PROJETO=1, PROPOSTA=1.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Desenvolvedores",
+			"item": [
+				{
+					"name": "Criar desenvolvedor [POST]",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"maria@dev.com\",\n  \"senha\": \"dev123\",\n  \"cpf\": \"111.222.333-44\",\n  \"nome\": \"Maria Souza\",\n  \"telefone\": \"(16) 98888-1111\",\n  \"sexo\": \"F\",\n  \"dataNascimento\": \"1995-04-20\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/desenvolvedores",
+							"host": [ "{{baseUrl}}" ],
+							"path": [ "api", "desenvolvedores" ]
+						},
+						"description": "Cria um novo desenvolvedor. Retorna 201 com header Location."
+					}
+				},
+				{
+					"name": "Listar desenvolvedores [GET]",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/desenvolvedores",
+							"host": [ "{{baseUrl}}" ],
+							"path": [ "api", "desenvolvedores" ]
+						}
+					}
+				},
+				{
+					"name": "Buscar desenvolvedor por id [GET]",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/desenvolvedores/3",
+							"host": [ "{{baseUrl}}" ],
+							"path": [ "api", "desenvolvedores", "3" ]
+						}
+					}
+				},
+				{
+					"name": "Atualizar desenvolvedor [PUT]",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"maria@dev.com\",\n  \"cpf\": \"111.222.333-44\",\n  \"nome\": \"Maria S. Atualizada\",\n  \"telefone\": \"(16) 90000-0000\",\n  \"sexo\": \"F\",\n  \"dataNascimento\": \"1995-04-20\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/desenvolvedores/4",
+							"host": [ "{{baseUrl}}" ],
+							"path": [ "api", "desenvolvedores", "4" ]
+						},
+						"description": "A senha e opcional no update (mantida se omitida)."
+					}
+				},
+				{
+					"name": "Remover desenvolvedor [DELETE]",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/desenvolvedores/4",
+							"host": [ "{{baseUrl}}" ],
+							"path": [ "api", "desenvolvedores", "4" ]
+						},
+						"description": "Retorna 204 No Content."
+					}
+				}
+			]
+		},
+		{
+			"name": "Empresas",
+			"item": [
+				{
+					"name": "Criar empresa [POST]",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"nova@empresa.com\",\n  \"senha\": \"senha123\",\n  \"cnpj\": \"98.765.432/0001-10\",\n  \"nome\": \"NovaSoft Ltda\",\n  \"descricao\": \"Consultoria de software\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/empresas",
+							"host": [ "{{baseUrl}}" ],
+							"path": [ "api", "empresas" ]
+						}
+					}
+				},
+				{
+					"name": "Listar empresas [GET]",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/empresas",
+							"host": [ "{{baseUrl}}" ],
+							"path": [ "api", "empresas" ]
+						}
+					}
+				},
+				{
+					"name": "Buscar empresa por id [GET]",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/empresas/2",
+							"host": [ "{{baseUrl}}" ],
+							"path": [ "api", "empresas", "2" ]
+						}
+					}
+				},
+				{
+					"name": "Atualizar empresa [PUT]",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"nova@empresa.com\",\n  \"cnpj\": \"98.765.432/0001-10\",\n  \"nome\": \"NovaSoft S.A.\",\n  \"descricao\": \"Consultoria premium\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/empresas/5",
+							"host": [ "{{baseUrl}}" ],
+							"path": [ "api", "empresas", "5" ]
+						}
+					}
+				},
+				{
+					"name": "Remover empresa [DELETE]",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/empresas/5",
+							"host": [ "{{baseUrl}}" ],
+							"path": [ "api", "empresas", "5" ]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Projetos",
+			"item": [
+				{
+					"name": "Criar projeto na empresa {id} [POST]",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"titulo\": \"App de delivery\",\n  \"descricao\": \"Aplicativo mobile com backend Spring Boot\",\n  \"stackTecnologica\": \"Java, Spring Boot, React Native\",\n  \"orcamentoEstimado\": 15000.00,\n  \"prazoEntrega\": \"2026-12-31\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/projetos/empresas/2",
+							"host": [ "{{baseUrl}}" ],
+							"path": [ "api", "projetos", "empresas", "2" ]
+						}
+					}
+				},
+				{
+					"name": "Listar projetos da empresa {id} [GET]",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/projetos/empresas/2",
+							"host": [ "{{baseUrl}}" ],
+							"path": [ "api", "projetos", "empresas", "2" ]
+						}
+					}
+				},
+				{
+					"name": "Filtrar projetos por stack {nome} [GET]",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/projetos/stacks/Java",
+							"host": [ "{{baseUrl}}" ],
+							"path": [ "api", "projetos", "stacks", "Java" ]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Propostas",
+			"item": [
+				{
+					"name": "Listar propostas do projeto {id} [GET]",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/propostas/projetos/1",
+							"host": [ "{{baseUrl}}" ],
+							"path": [ "api", "propostas", "projetos", "1" ]
+						}
+					}
+				},
+				{
+					"name": "Listar propostas do desenvolvedor {id} [GET]",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/propostas/desenvolvedores/3",
+							"host": [ "{{baseUrl}}" ],
+							"path": [ "api", "propostas", "desenvolvedores", "3" ]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Casos de erro",
+			"item": [
+				{
+					"name": "Validacao: dados invalidos (400)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"naoehemail\",\n  \"senha\": \"x\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/desenvolvedores",
+							"host": [ "{{baseUrl}}" ],
+							"path": [ "api", "desenvolvedores" ]
+						},
+						"description": "Retorna 400 com lista de campos invalidos."
+					}
+				},
+				{
+					"name": "Duplicado: e-mail ja cadastrado (409)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"joao@dev.com\",\n  \"senha\": \"dev123\",\n  \"cpf\": \"999.888.777-66\",\n  \"nome\": \"Outro Joao\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/desenvolvedores",
+							"host": [ "{{baseUrl}}" ],
+							"path": [ "api", "desenvolvedores" ]
+						},
+						"description": "Retorna 409 Conflict."
+					}
+				},
+				{
+					"name": "Nao encontrado: id inexistente (404)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/empresas/999",
+							"host": [ "{{baseUrl}}" ],
+							"path": [ "api", "empresas", "999" ]
+						},
+						"description": "Retorna 404 Not Found."
+					}
+				}
+			]
+		}
+	]
+}

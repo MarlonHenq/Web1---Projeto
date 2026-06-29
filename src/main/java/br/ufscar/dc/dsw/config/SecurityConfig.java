@@ -23,12 +23,14 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests(authz -> authz
 				.requestMatchers("/css/**", "/js/**", "/uploads/**", "/error/**").permitAll()
+				.requestMatchers("/api/**").permitAll()
 				.requestMatchers("/", "/projetos", "/projetos/**").permitAll()
 				.requestMatchers("/login", "/cadastro", "/cadastro/**").permitAll()
 				.requestMatchers("/admin/**").hasRole("ADMIN")
 				.requestMatchers("/empresa/**").hasRole("EMPRESA")
 				.requestMatchers("/dev/**").hasRole("DESENVOLVEDOR")
 				.anyRequest().authenticated())
+			.csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
 			.formLogin(form -> form
 				.loginPage("/login")
 				.defaultSuccessUrl("/", true)
